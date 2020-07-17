@@ -34,6 +34,8 @@
  链接：https://leetcode-cn.com/problems/add-two-numbers-ii
  著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
+
+// 解法1
 class Solution {
     func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
        
@@ -140,4 +142,79 @@ class Solution {
         
         return desCount
     }
+}
+//解法二
+class Solution {
+    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        
+
+        let  list1 = ListNodeToArray(list: l1)
+        let  list2 = ListNodeToArray(list: l2)
+        var intArray = [Int]()
+        var maxList = list1
+        var minList = list2
+        if list1.count < list2.count {
+            maxList = list2
+            minList = list1
+        }
+        
+       
+        var exceed = 0
+        
+        for (index,value) in maxList.enumerated() {
+            
+            var value2 = 0
+            if index < minList.count  {
+                value2 = minList[index];
+            }
+            let num = (value2 + value) + exceed
+            if num >= 10 {
+                exceed = 1
+            }
+            else {
+                exceed = 0
+            }
+            intArray.append(num % 10)
+        }
+        if exceed == 1{
+            intArray.append(exceed)
+        }
+
+        return arrayToListNode(intArray.reversed());
+    }
+    //转成数组 自己计算
+    func ListNodeToArray(list : ListNode?) -> [Int] {
+        var array  = [Int]()
+        var  next = list
+        while next != nil {
+            array.append(next!.val )
+            next = next?.next
+        }
+        return array.reversed()
+
+    }
+  
+    // 数组转成链表
+    func arrayToListNode(_ array : [Int]?) -> ListNode? {
+        
+        var headNode : ListNode?
+        var nextNode : ListNode?
+        for (index , value) in array!.enumerated() {
+            
+            let item = ListNode(value)
+            if index == 0 {
+                headNode = item
+                nextNode = item
+                
+            }
+            else {
+                nextNode?.next = item
+                nextNode = item
+            }
+            
+        }
+        return headNode
+    }
+    
+    
 }
